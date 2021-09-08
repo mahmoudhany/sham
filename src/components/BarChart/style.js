@@ -20,6 +20,7 @@ export const BarChartContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  margin-right: 10px;
 `;
 
 export const Chart = css`
