@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../../context'
 import _ from 'lodash';
-import { BarChartContainer, BlackLine, Container, MainContainer, MakeBar, Number } from './style';
-
+import { BarChartContainer, BlackLine, Container, MainContainer, MakeBar, Number, Title } from './style';
 function BarChart() {
   const { chartData } = useContext(AppContext)
 
@@ -15,36 +14,50 @@ function BarChart() {
   ];
 
   const prepareData = () => {
-    const byDate = _.groupBy(chartData, 'date')
-    console.log(byDate)
-
-    const byQ = _.groupBy(chartData, 'question')
-    console.log(byQ)
-    // for (const key in byDate) {
-    //   console.log(byDate[key])
-    // }
-
+    const byDate = _.groupBy(chartData, 'date');
+    console.log('byDate', byDate);
+    const months = [];
+    const values = [];
+    Object.keys(byDate).map(key => {
+      months.push(key);
+      let q1w = 0;
+      let q2w = 0;
+      byDate[key].filter((q) => {
+        if (q.question === 2) q1w = q1w + q.weight;
+        if (q.question === 4) q2w = q2w + q.weight;
+      });
+      values.push([q1w < 0 ? 0 : q1w, q2w < 0 ? 0 : q2w]);
+    });
+    return {
+      months,
+      values
+    }
   }
   return (
     <Container>
-      {/* <BlackLine /> */}
-      {prepareData()}
       {
-
         <MainContainer>
-          {__DATA__.map(({ distance }, i) => {
-            return (
-              <BarChartContainer key={i}>
-                {/* <Number color={'red'}>{distance} km</Number> */}
-                <MakeBar height={distance * 2} color={'red'} />
-                <MakeBar height={distance * 2} color={'green'} />
+          {
+            prepareData().values.map((val, index) => (
+              <BarChartContainer >
+                <span
+                  style={{
+                    position: 'absolute', bottom: 100, color: '#000', fontSize: 6, transform: 'rotate(-40deg)', minWidth: 60
+                  }}>{prepareData().months[index]}
+                </span>
+                <MakeBar height={val[0]} color={'#bdc3c7'} />
+                <MakeBar height={val[1]} color={'#9b59b6'} />
               </BarChartContainer>
-            );
-          })}
+            ))
+          }
         </MainContainer>
       }
       <BlackLine />
-
+      <br />
+      <br />
+      <br />
+      <Title color={'#bdc3c7'}>Reception and admission were</Title>
+      <Title color={'#9b59b6'}>The medical care you received was</Title>
     </Container>
   )
 }

@@ -48,7 +48,6 @@ const AppProvider = ({ children }) => {
           })
         ]);
       }, []);
-      // console.log('data', data);
       setChartData(data)
     }
   }

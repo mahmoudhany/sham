@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
+  position: relative;
   height: 500px;
   width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  /* background: #000; */
 `;
 
 export const MainContainer = styled.div`
@@ -25,6 +25,7 @@ export const BarChartContainer = styled.div`
 export const Chart = css`
   margin-top: 10px;
   width: 20px;
+  
   &:hover {
     opacity: 0.8;
   }
@@ -33,16 +34,10 @@ export const Chart = css`
   }
 `;
 
-export const Number = styled.span`
-  font-size: 1.5rem;
-  text-align: center;
-  color: ${(props) => props.color};
-`;
-
 export const MakeBar = styled.div`
-  height: ${(props) => props.height}%;
-  background-color: ${props => props.color};
-  margin-right: 5px;
+
+  height: ${(props) => props.height < 100 ? props.height : props.height / 10}%;
+  background-color: ${(props) => props.color};
   ${Chart};
 `;
 
@@ -51,3 +46,19 @@ export const BlackLine = styled.div`
   height: 5px;
   background-color: grey;
 `;
+
+export const Title = styled.div`
+padding: 5px;
+margin-top: 10px;
+display: flex;
+align-items: center;
+&:before{
+  content: '';
+  display: inline-block;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-color: ${(props) => props.color};
+}
+`
